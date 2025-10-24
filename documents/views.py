@@ -140,7 +140,12 @@ class DocumentViewSet(viewsets.ModelViewSet):
         document = self.get_object()
         
         try:
-            download_url = StorageService.generate_get_url(document.bucket_key)
+            # DEMO: Comentado para demo sin S3 configurado
+            # download_url = StorageService.generate_get_url(document.bucket_key)
+            
+            # Generar URL mock para demo
+            download_url = f"https://storage-demo.example.com/{document.bucket_key}?expires=900"
+            logger.info(f"URL de descarga MOCK generada para documento {document.id}")
         except Exception as e:
             logger.error(f"Error generando URL de descarga: {e}")
             return Response(
