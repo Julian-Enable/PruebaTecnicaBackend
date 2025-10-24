@@ -1,15 +1,16 @@
-# 🎬 GUION DETALLADO DEL VIDEO - ERP DOCUMENTS API
+# 🎬 GUION DETALLADO DEL VIDEO - SUSTENTACIÓN Y DEMO
 
-**Duración Total**: 5-7 minutos  
-**Objetivo**: Demostrar el sistema de gestión documental con validación jerárquica
+**Duración Total**: 8-10 minutos  
+**Objetivo**: Explicar cómo se realizó la prueba técnica y demostrar el funcionamiento del sistema
 
 ---
 
 ## 🎯 ESTRUCTURA DEL VIDEO
 
-### **INTRODUCCIÓN** (30 segundos)
-### **DEMO TÉCNICA** (4-5 minutos)
-### **CIERRE** (30 segundos)
+### **PARTE 1: INTRODUCCIÓN Y CONTEXTO** (1 minuto)
+### **PARTE 2: EXPLICACIÓN DE LA SOLUCIÓN** (2-3 minutos)
+### **PARTE 3: DEMO EN VIVO** (4-5 minutos)
+### **PARTE 4: CIERRE** (1 minuto)
 
 ---
 
@@ -17,24 +18,102 @@
 
 ---
 
-## **PARTE 1: INTRODUCCIÓN** (30 segundos)
+## **PARTE 1: INTRODUCCIÓN Y CONTEXTO** (1 minuto)
 
 ### 🎤 **Lo que vas a decir:**
 
-> "Hola, soy Julián González y les voy a presentar el sistema ERP Documents, una API REST desarrollada en Django que permite gestionar documentos empresariales con flujos de validación jerárquica.
+> "Hola, soy Julián González y este es mi video de sustentación para la prueba técnica Backend.
 > 
-> El sistema cuenta con autenticación JWT, multi-tenancy para múltiples empresas, y una característica especial: la aprobación en cascada, donde un CEO puede aprobar un documento y automáticamente se aprueban todos los niveles inferiores.
+> El desafío consistía en desarrollar una API REST para gestionar documentos empresariales con flujos de validación jerárquica. Los documentos debían poder ser aprobados o rechazados por múltiples niveles de aprobadores según la estructura organizacional de cada empresa.
 > 
-> El proyecto está desplegado en Railway con PostgreSQL y usa AWS S3 para almacenamiento de archivos. Vamos a verlo en acción."
+> Voy a explicar primero cómo abordé la solución, las tecnologías que utilicé y las decisiones de diseño más importantes. Luego les mostraré el sistema funcionando en vivo."
 
 ### 📹 **Lo que vas a mostrar:**
 
-- Tu pantalla con Postman abierto
-- Puedes mencionar la arquitectura: Django + PostgreSQL + Railway
+- Tu pantalla (puede ser el README del proyecto o el código abierto en VS Code)
 
 ---
 
-## **PARTE 2: AUTENTICACIÓN** (30 segundos)
+## **PARTE 2: EXPLICACIÓN DE LA SOLUCIÓN** (2-3 minutos)
+
+### 🎤 **Sección 2.1: Arquitectura General** (1 minuto)
+
+> "Para resolver este problema, diseñé una arquitectura basada en Django REST Framework con los siguientes componentes principales:
+> 
+> **Backend**: Django 5.0.1 con Django REST Framework
+> - Elegí Django por su robustez, el ORM potente, y las capacidades de migración de base de datos
+> 
+> **Autenticación**: JWT usando Simple JWT
+> - Implementé autenticación basada en tokens para APIs stateless y escalables
+> 
+> **Base de datos**: PostgreSQL en Railway
+> - Usé PostgreSQL por su soporte robusto de transacciones y relaciones complejas
+> 
+> **Despliegue**: Railway con variables de entorno
+> - Railway me permitió desplegar rápidamente con integración continua desde GitHub
+> 
+> **Almacenamiento**: AWS S3 (modo demo)
+> - Diseñé la integración con S3, aunque en esta demo uso URLs simuladas"
+
+### 📹 **Lo que vas a mostrar:**
+
+- Puedes mostrar el archivo `settings.py` brevemente
+- O un diagrama si lo tienes preparado
+
+---
+
+### 🎤 **Sección 2.2: Modelo de Datos** (1 minuto)
+
+> "El modelo de datos tiene varias entidades clave:
+> 
+> **1. Company**: Representa cada empresa en el sistema multi-tenant
+> 
+> **2. User**: Los usuarios del sistema con autenticación
+> 
+> **3. Membership**: Relaciona usuarios con empresas (un usuario puede pertenecer a varias empresas)
+> 
+> **4. Document**: El documento en sí, con información de entidad asociada, bucket key para S3, y estado de validación
+> 
+> **5. ValidationFlow**: El flujo de aprobación configurado para cada documento
+> 
+> **6. ValidationStep**: Cada paso del flujo con su orden y aprobador asignado
+> 
+> **7. ValidationInstance**: Representa el estado actual de cada paso (pendiente, aprobado, rechazado)
+> 
+> **8. DocumentAudit**: Registro inmutable de todas las acciones sobre el documento
+> 
+> Este diseño permite tener flujos de aprobación completamente flexibles y configurables por documento."
+
+### 📹 **Lo que vas a mostrar:**
+
+- Puedes mostrar el archivo `models.py` con los modelos
+- O mostrar las tablas en Railway Database
+
+---
+
+### 🎤 **Sección 2.3: Características Destacadas** (30 segundos)
+
+> "Implementé tres características que considero destacadas:
+> 
+> **1. Aprobación en Cascada**: Cuando un aprobador de nivel superior aprueba, automáticamente se aprueban todos los niveles inferiores. Esto es útil para casos de emergencia o cuando el CEO tiene autoridad total.
+> 
+> **2. Estados Terminales**: Un documento rechazado no puede ser aprobado después, evitando conflictos de estado y garantizando integridad.
+> 
+> **3. Auditoría Inmutable**: Cada acción queda registrada con actor, timestamp y razón para compliance y trazabilidad completa.
+> 
+> Ahora vamos a ver todo esto funcionando en vivo."
+
+### 📹 **Lo que vas a mostrar:**
+
+- Transición a Postman para la demo
+
+---
+
+## **PARTE 3: DEMO EN VIVO** (4-5 minutos)
+
+---
+
+## **DEMO 3.1: AUTENTICACIÓN** (30 segundos)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -62,7 +141,7 @@
 
 ---
 
-## **PARTE 3: CREAR DOCUMENTO CON VALIDACIÓN** (1 minuto)
+## **DEMO 3.2: CREAR DOCUMENTO CON VALIDACIÓN** (1 minuto)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -111,7 +190,7 @@
 
 ---
 
-## **PARTE 4: VERIFICAR DOCUMENTOS PENDIENTES** (20 segundos)
+## **DEMO 3.3: VERIFICAR DOCUMENTOS PENDIENTES** (20 segundos)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -129,7 +208,7 @@
 
 ---
 
-## **PARTE 5: APROBACIÓN EN CASCADA** ⭐ (1 minuto 30 segundos)
+## **DEMO 3.4: APROBACIÓN EN CASCADA** ⭐ (1 minuto 30 segundos)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -160,7 +239,7 @@
 
 ---
 
-## **PARTE 6: VER AUDITORÍA** (1 minuto)
+## **DEMO 3.5: VER AUDITORÍA** (1 minuto)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -188,7 +267,7 @@
 
 ---
 
-## **PARTE 7: RECHAZO DE DOCUMENTO** (1 minuto)
+## **DEMO 3.6: RECHAZO DE DOCUMENTO** (1 minuto)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -223,7 +302,7 @@
 
 ---
 
-## **PARTE 8: LISTAR DOCUMENTOS FINALES** (30 segundos)
+## **DEMO 3.7: LISTAR DOCUMENTOS FINALES** (30 segundos)
 
 ### 🎤 **Lo que vas a decir:**
 
@@ -243,27 +322,42 @@
 
 ---
 
-## **PARTE 9: CIERRE** (30 segundos)
+## **PARTE 4: CIERRE Y CONCLUSIONES** (1 minuto)
 
 ### 🎤 **Lo que vas a decir:**
 
-> "En resumen, el sistema ERP Documents ofrece:
+> "Para resumir, la solución que implementé cumple con todos los requisitos de la prueba técnica:
 > 
-> ✅ Autenticación robusta con JWT  
-> ✅ Flujos de validación jerárquicos configurables  
-> ✅ Aprobación en cascada para casos especiales  
-> ✅ Auditoría inmutable de todas las acciones  
-> ✅ Multi-tenancy con control de acceso por empresa  
-> ✅ Estado terminal para documentos rechazados  
+> **✅ Funcionalidades Core:**
+> - Autenticación robusta con JWT
+> - CRUD completo de documentos
+> - Flujos de validación jerárquicos configurables
+> - Aprobación y rechazo con control de permisos
+> - Auditoría inmutable de todas las acciones
 > 
-> El código está desplegado en Railway, usa PostgreSQL como base de datos, y está preparado para integración con AWS S3 para almacenamiento de archivos.
+> **✅ Características Adicionales:**
+> - Multi-tenancy con control de acceso por empresa
+> - Aprobación en cascada para casos especiales
+> - Estados terminales para evitar conflictos
+> - Integración preparada con AWS S3
+> - Validación de permisos (solo el aprobador asignado puede aprobar)
 > 
-> Todo el código está disponible en mi repositorio de GitHub. Gracias por ver esta demostración."
+> **✅ Aspectos Técnicos:**
+> - Código limpio y bien estructurado siguiendo mejores prácticas
+> - Migraciones de base de datos versionadas
+> - Variables de entorno para configuración
+> - Desplegado en producción y funcionando
+> 
+> El código completo está en GitHub y la API está desplegada en Railway lista para usar.
+> 
+> Gracias por su tiempo. Quedo atento a cualquier pregunta o feedback."
 
 ### 📹 **Lo que vas a mostrar:**
 
-- Puedes mostrar brevemente el README del proyecto
-- O la URL de Railway funcionando
+- Puedes mostrar brevemente:
+  - La URL de Railway funcionando
+  - El repositorio de GitHub
+  - O simplemente tu rostro hablando a cámara
 
 ---
 
@@ -305,52 +399,72 @@ Antes de empezar a grabar, verifica:
 
 ---
 
-## 🎯 PUNTOS CLAVE A DESTACAR
+## 🎯 PUNTOS CLAVE PARA LA SUSTENTACIÓN
 
-### **1. Aprobación en Cascada** ⭐
-> "Esta es la característica más importante: cuando el CEO aprueba, automáticamente aprueba todos los niveles inferiores"
+### **1. Decisiones de Diseño** 💡
+> "Elegí Django por su ORM robusto y capacidades de migración. El modelo de ValidationFlow separado de ValidationInstance permite reusabilidad y flexibilidad."
 
-### **2. Auditoría Inmutable**
-> "Cada acción queda registrada con usuario, timestamp y razón. Esto es crucial para compliance y trazabilidad"
+### **2. Aprobación en Cascada** ⭐
+> "Esta es la característica estrella: cuando el CEO aprueba, automáticamente aprueba todos los niveles inferiores. La implementé con una query que actualiza todos los steps con order menor al del aprobador."
 
-### **3. Estado Terminal**
-> "Los documentos rechazados no pueden ser aprobados después, evitando conflictos de estado"
+### **3. Auditoría Inmutable**
+> "Cada acción crea un registro en DocumentAudit que nunca se elimina ni modifica. Esto es crucial para compliance y permite trazabilidad completa de quién hizo qué y cuándo."
 
-### **4. Multi-tenancy**
-> "Cada empresa tiene sus documentos completamente aislados con control de acceso"
+### **4. Estados Terminales**
+> "Los documentos rechazados no pueden ser aprobados después. Esto se valida a nivel de API y evita conflictos de estado."
+
+### **5. Multi-tenancy**
+> "Cada empresa tiene sus documentos completamente aislados. Los usuarios solo ven documentos de empresas a las que pertenecen vía Membership."
+
+### **6. Desafíos Superados** 🚀
+> "El principal desafío fue diseñar el modelo de validación que permitiera tanto aprobación secuencial como en cascada. Lo resolví con ValidationInstance que trackea el estado de cada step independientemente."
 
 ---
 
-## ⏱️ TIMING SUGERIDO
+## ⏱️ TIMING SUGERIDO (VERSIÓN COMPLETA)
 
 | Sección | Tiempo | Acumulado |
 |---------|--------|-----------|
-| Introducción | 30s | 0:30 |
-| Autenticación | 30s | 1:00 |
-| Crear documento | 1m | 2:00 |
-| Ver pendientes | 20s | 2:20 |
-| Aprobar cascada | 1m 30s | 3:50 |
-| Ver auditoría | 1m | 4:50 |
-| Rechazar documento | 1m | 5:50 |
-| Listar finales | 30s | 6:20 |
-| Cierre | 30s | 6:50 |
+| **PARTE 1: INTRODUCCIÓN** |
+| Presentación y contexto | 1m | 1:00 |
+| **PARTE 2: EXPLICACIÓN** |
+| Arquitectura general | 1m | 2:00 |
+| Modelo de datos | 1m | 3:00 |
+| Características destacadas | 30s | 3:30 |
+| **PARTE 3: DEMO** |
+| Autenticación | 30s | 4:00 |
+| Crear documento | 1m | 5:00 |
+| Ver pendientes | 20s | 5:20 |
+| Aprobar cascada | 1m 30s | 6:50 |
+| Ver auditoría | 1m | 7:50 |
+| Rechazar documento | 1m | 8:50 |
+| Listar finales | 30s | 9:20 |
+| **PARTE 4: CIERRE** |
+| Conclusiones | 1m | 10:20 |
 
-**Total**: ~7 minutos (perfecto para una demo completa)
+**Total**: ~10 minutos (ideal para sustentación completa)
 
 ---
 
-## 🎬 ALTERNATIVA CORTA (3-4 MINUTOS)
+## 🎬 VERSIÓN CORTA (5-6 MINUTOS)
 
-Si necesitas una versión más corta, enfócate en:
+Si necesitas una versión más corta para la sustentación:
 
-1. **Introducción** (20s)
-2. **Login** (20s)
-3. **Crear documento** (40s)
-4. **Aprobar en cascada** (1m)
-5. **Ver auditoría** (1m)
-6. **Cierre** (20s)
+| Sección | Tiempo |
+|---------|--------|
+| Introducción + explicación rápida | 1m 30s |
+| Login | 20s |
+| Crear documento | 40s |
+| Aprobar en cascada | 1m |
+| Ver auditoría | 1m |
+| Rechazar documento (opcional) | 40s |
+| Cierre | 30s |
 
-**Total**: ~3.5 minutos
+**Total**: ~5.5 minutos
+
+### 🎤 **Script versión corta:**
+
+> "Desarrollé una API REST en Django con validación jerárquica de documentos. Destaca la aprobación en cascada donde un CEO puede aprobar todos los niveles automáticamente. Usa JWT, PostgreSQL, está desplegada en Railway y tiene auditoría completa. Vamos a verlo funcionando..."
 
 ---
 
