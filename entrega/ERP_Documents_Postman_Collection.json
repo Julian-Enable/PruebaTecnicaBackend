@@ -1,0 +1,298 @@
+{
+  "info": {
+    "name": "ERP Documents - Demo",
+    "description": "Sistema de Gestión de Documentos con validación jerárquica",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "company_id",
+      "value": "TU-COMPANY-ID-AQUI",
+      "type": "string"
+    },
+    {
+      "key": "user_sebastian",
+      "value": "2",
+      "type": "string"
+    },
+    {
+      "key": "user_camilo",
+      "value": "3",
+      "type": "string"
+    },
+    {
+      "key": "user_juan",
+      "value": "4",
+      "type": "string"
+    },
+    {
+      "key": "vehicle_id",
+      "value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "type": "string"
+    },
+    {
+      "key": "document_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Autenticación",
+      "item": [
+        {
+          "name": "Obtener Token JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.access);",
+                  "    pm.environment.set('token', jsonData.access);",
+                  "    console.log('Token guardado:', jsonData.access.substring(0, 20) + '...');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"uploader\",\n  \"password\": \"test123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", ""]
+            },
+            "description": "Obtiene token JWT para autenticación"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Documentos",
+      "item": [
+        {
+          "name": "Listar Documentos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", ""]
+            },
+            "description": "Lista todos los documentos de la empresa"
+          }
+        },
+        {
+          "name": "Crear Documento SIN Validación",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"entity\": {\n    \"entity_type\": \"vehicle\",\n    \"entity_id\": \"{{vehicle_id}}\"\n  },\n  \"document\": {\n    \"name\": \"seguro_vehicular.pdf\",\n    \"mime_type\": \"application/pdf\",\n    \"size_bytes\": 50000,\n    \"bucket_key\": \"companies/test/vehicles/{{vehicle_id}}/seguro.pdf\"\n  },\n  \"validation_flow\": {\n    \"enabled\": false\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", ""]
+            },
+            "description": "Crea documento sin flujo de validación (validation_status = null)"
+          }
+        },
+        {
+          "name": "Crear Documento CON Validación (3 niveles)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('document_id', jsonData.id);",
+                  "    console.log('Document ID guardado:', jsonData.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"entity\": {\n    \"entity_type\": \"vehicle\",\n    \"entity_id\": \"{{vehicle_id}}\"\n  },\n  \"document\": {\n    \"name\": \"soat_2025.pdf\",\n    \"mime_type\": \"application/pdf\",\n    \"size_bytes\": 123456,\n    \"bucket_key\": \"companies/test/vehicles/{{vehicle_id}}/soat.pdf\"\n  },\n  \"validation_flow\": {\n    \"enabled\": true,\n    \"steps\": [\n      {\"order\": 1, \"approver_user_id\": {{user_sebastian}}},\n      {\"order\": 2, \"approver_user_id\": {{user_camilo}}},\n      {\"order\": 3, \"approver_user_id\": {{user_juan}}}\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", ""]
+            },
+            "description": "Crea documento con flujo jerárquico:\n- Orden 1: Sebastian\n- Orden 2: Camilo\n- Orden 3: Juan (CEO)"
+          }
+        },
+        {
+          "name": "Ver Documento por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", ""]
+            },
+            "description": "Obtiene detalles de un documento específico"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Validación",
+      "item": [
+        {
+          "name": "Aprobar - Juan (Orden 3) - CASCADA",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor_user_id\": {{user_juan}},\n  \"reason\": \"Aprobado por CEO - cumple todos los requisitos legales\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "approve", ""]
+            },
+            "description": "Juan (orden 3 = máximo) aprueba.\nLÓGICA DE CASCADA:\n- Se aprueban automáticamente órdenes 1 y 2\n- Documento pasa a APPROVED"
+          }
+        },
+        {
+          "name": "Rechazar Documento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor_user_id\": {{user_camilo}},\n  \"reason\": \"Documento ilegible - falta información\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/reject/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "reject", ""]
+            },
+            "description": "Rechaza documento (estado TERMINAL)\nNo se puede aprobar después"
+          }
+        },
+        {
+          "name": "Auditoría - Historial del Documento",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/audit/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "audit", ""]
+            },
+            "description": "Obtiene historial completo de cambios y validaciones"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Descarga",
+      "item": [
+        {
+          "name": "Generar URL de Descarga",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/download/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "download", ""]
+            },
+            "description": "Genera URL prefirmada para descarga (S3/GCS)\nExpira en 900 segundos"
+          }
+        }
+      ]
+    }
+  ]
+}
