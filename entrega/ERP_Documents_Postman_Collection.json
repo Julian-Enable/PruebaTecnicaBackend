@@ -116,6 +116,30 @@
           }
         },
         {
+          "name": "Listar Documentos PENDIENTES",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documents/?validation_status=P",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", ""],
+              "query": [
+                {
+                  "key": "validation_status",
+                  "value": "P"
+                }
+              ]
+            },
+            "description": "Lista solo documentos PENDING (esperando aprobación)\nUsa el 'id' de alguno para aprobar/rechazar"
+          }
+        },
+        {
           "name": "Crear Documento SIN Validación",
           "event": [
             {
