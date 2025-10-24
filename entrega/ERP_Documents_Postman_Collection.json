@@ -226,6 +226,84 @@
           }
         },
         {
+          "name": "Aprobar - Sebastian (Orden 1)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor_user_id\": 9,\n  \"reason\": \"Aprobado por Supervisor - documentación completa\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "approve", ""]
+            },
+            "description": "Aprobación secuencial - Orden 1 (Sebastian)\nSolo se aprueba este nivel, documento sigue PENDING"
+          }
+        },
+        {
+          "name": "Aprobar - Camilo (Orden 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor_user_id\": 10,\n  \"reason\": \"Aprobado por Gerente - presupuesto aprobado\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "approve", ""]
+            },
+            "description": "Aprobación secuencial - Orden 2 (Camilo)\nSe aprueba orden 2, documento sigue PENDING"
+          }
+        },
+        {
+          "name": "Aprobar - Juan (Orden 3) - FINAL",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actor_user_id\": 11,\n  \"reason\": \"Aprobado por CEO - autorización final\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "approve", ""]
+            },
+            "description": "Aprobación secuencial - Orden 3 (Juan)\nÚltimo nivel, documento pasa a APPROVED"
+          }
+        },
+        {
           "name": "Rechazar Documento",
           "request": {
             "method": "POST",
@@ -241,7 +319,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"actor_user_id\": {{user_camilo}},\n  \"reason\": \"Documento ilegible - falta información\"\n}"
+              "raw": "{\n  \"actor_user_id\": 10,\n  \"reason\": \"Documento ilegible - falta firma del representante legal\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/{{document_id}}/reject/",
