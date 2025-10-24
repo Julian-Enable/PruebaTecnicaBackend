@@ -72,12 +72,13 @@ class DocumentViewSet(viewsets.ModelViewSet):
         bucket_key = doc_data['bucket_key']
         
         # CRÍTICO: Verificar que el objeto existe en el bucket
-        logger.info(f"Verificando que el objeto existe en el bucket: {bucket_key}")
-        if not StorageService.verify_object_exists(bucket_key):
-            return Response(
-                {'error': f'Objeto no encontrado en el bucket: {bucket_key}'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # Comentado temporalmente para demo sin S3
+        # logger.info(f"Verificando que el objeto existe en el bucket: {bucket_key}")
+        # if not StorageService.verify_object_exists(bucket_key):
+        #     return Response(
+        #         {'error': f'Objeto no encontrado en el bucket: {bucket_key}'},
+        #         status=status.HTTP_400_BAD_REQUEST
+        #     )
         
         document = Document.objects.create(
             company=company,
