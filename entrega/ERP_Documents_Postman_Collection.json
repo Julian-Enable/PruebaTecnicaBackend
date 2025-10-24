@@ -17,7 +17,7 @@
     },
     {
       "key": "company_id",
-      "value": "TU-COMPANY-ID-AQUI",
+      "value": "9da4abe9-57c7-4d76-ad5c-5e01d554f2c5",
       "type": "string"
     },
     {
@@ -77,7 +77,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"uploader\",\n  \"password\": \"test123\"\n}"
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/token/",
