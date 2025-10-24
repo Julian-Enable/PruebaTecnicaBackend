@@ -1,6 +1,6 @@
 # 🧪 PASO 2: PRUEBAS CON POSTMAN
 
-> **Requisito:** Haber completado el PASO 1 (servidor Django corriendo)
+> **Requisito:** Haber completado DEPLOY_RAILWAY.md (API en producción)
 
 ---
 
@@ -10,9 +10,10 @@
 
 ## 📋 Pre-requisitos
 
-- [ ] Servidor Django corriendo (de PASO_1_CONFIGURACION.md)
+- [ ] API desplegada en Railway (de DEPLOY_RAILWAY.md) ✅
+- [ ] URL pública de Railway (ejemplo: `https://tu-proyecto.railway.app`)
 - [ ] Postman instalado (descarga de: https://www.postman.com/downloads/)
-- [ ] Los IDs que copiaste en el PASO 1
+- [ ] Usuarios creados en Railway (via Railway CLI o Django Admin)
 
 ---
 
@@ -51,32 +52,33 @@
 
 ### 3️⃣ Configurar las Variables de la Colección
 
-**Esto es CRÍTICO - aquí pones los IDs que copiaste:**
+**Esto es CRÍTICO - aquí configuras tu URL de Railway:**
 
 1. **Click en la colección "ERP Documents - Demo"** (nombre principal)
 
 2. **Click en la pestaña "Variables"** (arriba)
 
-3. **Reemplaza los valores** con los IDs que copiaste del PASO 1:
+3. **Actualiza la URL base con tu dominio de Railway:**
 
-| Variable | Valor Actual | Tu Valor (ejemplo) |
-|----------|--------------|-------------------|
-| `base_url` | http://localhost:8000 | **NO CAMBIES** |
+| Variable | Valor a Configurar | Notas |
+|----------|-------------------|--------|
+| `base_url` | `https://tu-proyecto.railway.app` | **REEMPLAZA** con tu URL de Railway |
 | `token` | (vacío) | **NO CAMBIES** (se llena solo) |
-| `company_id` | TU-COMPANY-ID-AQUI | **PEGA TU ID aquí** |
-| `user_sebastian` | 2 | **PEGA TU ID aquí** |
-| `user_camilo` | 3 | **PEGA TU ID aquí** |
-| `user_juan` | 4 | **PEGA TU ID aquí** |
+| `company_id` | TU-COMPANY-ID-AQUI | **OPCIONAL** - Si cargaste datos de ejemplo |
+| `user_sebastian` | 2 | **OPCIONAL** - Si cargaste datos de ejemplo |
+| `user_camilo` | 3 | **OPCIONAL** - Si cargaste datos de ejemplo |
+| `user_juan` | 4 | **OPCIONAL** - Si cargaste datos de ejemplo |
 | `vehicle_id` | aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee | **NO CAMBIES** |
 | `document_id` | (vacío) | **NO CAMBIES** (se llena solo) |
 
-**Ejemplo de cómo se vería:**
+**Ejemplo de configuración:**
 ```
-company_id = ebbc771d-86ea-404e-b69e-20bd0511b1c8
-user_sebastian = 1
-user_camilo = 2
-user_juan = 3
+base_url = https://pruebatecnica-production-d2f1.up.railway.app
+token = (se llena automáticamente)
+company_id = ebbc771d-86ea-404e-b69e-20bd0511b1c8 (si cargaste datos)
 ```
+
+📝 **Nota:** Si NO cargaste los datos de ejemplo en Railway, los IDs de company/usuarios no importan para las pruebas básicas.
 
 4. **Click en "Save"** (arriba a la derecha, botón azul)
 
@@ -112,8 +114,9 @@ user_juan = 3
 **🎉 El token se guarda automáticamente en las variables** - No necesitas copiarlo manualmente.
 
 **❌ Si ves un error:**
-- Verifica que el servidor Django esté corriendo
-- Ve a http://127.0.0.1:8000/admin/ en tu navegador (debe cargar)
+- Verifica que tu URL de Railway esté correcta en las variables
+- Prueba abrir `https://tu-proyecto.railway.app/admin/` en tu navegador
+- Revisa los logs en Railway si no responde
 
 ---
 

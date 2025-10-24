@@ -1,11 +1,11 @@
-# 📦 CARPETA DE ENTREGA
+# 📦 CARPETA DE ENTREGA - RAILWAY DEPLOY
 
 ## 🎯 EMPIEZA AQUÍ
 
 **Lee los archivos EN ESTE ORDEN:**
 
-1. ✅ **PASO_1_CONFIGURACION.md** ← Configurar PostgreSQL y Django (15 min)
-2. ✅ **PASO_2_PRUEBAS_POSTMAN.md** ← Probar el sistema completo (20 min)
+1. ✅ **DEPLOY_RAILWAY.md** ⭐ ← Deployar en Railway.app (15 min)
+2. ✅ **PASO_2_PRUEBAS_POSTMAN.md** ← Probar con URL de Railway (20 min)
 3. ✅ **PASO_3_GUION_VIDEO.md** ← Grabar tu video de 10 minutos
 
 ---
@@ -15,25 +15,32 @@
 | Archivo | Propósito |
 |---------|-----------|
 | **INICIO_AQUI.md** | Este archivo - índice principal |
-| **PASO_1_CONFIGURACION.md** | ⭐ Guía detallada de configuración |
-| **PASO_2_PRUEBAS_POSTMAN.md** | ⭐ Guía detallada de pruebas |
+| **DEPLOY_RAILWAY.md** | ⭐ Deploy en producción con Railway |
+| **PASO_2_PRUEBAS_POSTMAN.md** | ⭐ Guía de pruebas con Postman |
 | **PASO_3_GUION_VIDEO.md** | ⭐ Guión palabra por palabra para video |
-| `setup_postgres.ps1` | Script: crear base de datos |
-| `fix_postgres_permissions.ps1` | Script: arreglar permisos |
-| `load_data.py` | Script: cargar usuarios de prueba |
 | `ERP_Documents_Postman_Collection.json` | Colección Postman con 8 requests |
 
-**Total: 8 archivos** (3 guías + 5 archivos técnicos)
+**Total: 5 archivos** (4 guías + 1 colección Postman)
 
 ---
 
 ## ⏱️ Tiempo Total Estimado
 
-- **Configuración:** 15 minutos (una sola vez)
-- **Pruebas:** 20 minutos (practicar)
+- **Deploy Railway:** 15 minutos (una sola vez)
+- **Pruebas en producción:** 20 minutos (practicar)
 - **Video:** 10 minutos (grabar)
 
 **Total: ~45 minutos**
+
+---
+
+## 🌟 Ventajas de Railway vs Local
+
+✅ **URL pública** - Cualquiera puede probar tu API  
+✅ **PostgreSQL en la nube** - Cero configuración local  
+✅ **HTTPS automático** - Seguro por defecto  
+✅ **Deploy automático** - Push y listo  
+✅ **Más profesional** - "Lo desplegué en producción" 🚀
 
 ---
 
@@ -102,11 +109,15 @@ Cada guía incluye:
 
 **Verifica que tienes:**
 
-- [ ] PostgreSQL instalado y corriendo
-- [ ] Python 3.12 instalado
+- [ ] Cuenta en Railway.app (gratis - https://railway.app)
+- [ ] Cuenta en GitHub (con el repo ya subido ✅)
 - [ ] Postman instalado (https://www.postman.com/downloads/)
-- [ ] Este proyecto descargado
-- [ ] PowerShell abierto
+- [ ] Navegador web
+
+**NO necesitas:**
+- ❌ PostgreSQL local
+- ❌ Configurar nada en tu máquina
+- ❌ Python instalado localmente (Railway lo hace)
 
 ---
 
@@ -127,7 +138,13 @@ PruebaTecnicaBackend/
 
 ## 🚀 ¡EMPIEZA AHORA!
 
-**👉 Abre:** `PASO_1_CONFIGURACION.md`
+**👉 Abre:** `DEPLOY_RAILWAY.md`
+
+**En 15 minutos tendrás:**
+- ✅ API funcionando en producción
+- ✅ PostgreSQL en la nube
+- ✅ URL pública para demos
+- ✅ Deploy automático configurado
 
 ---
 
