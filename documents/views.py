@@ -71,14 +71,17 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
         bucket_key = doc_data['bucket_key']
         
-        # CRÍTICO: Verificar que el objeto existe en el bucket
-        # Comentado temporalmente para demo sin S3
-        # logger.info(f"Verificando que el objeto existe en el bucket: {bucket_key}")
-        # if not StorageService.verify_object_exists(bucket_key):
-        #     return Response(
-        #         {'error': f'Objeto no encontrado en el bucket: {bucket_key}'},
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
+        # CRÍTICO: Verificar que el objeto existe en el bucket (solo si storage está configurado)
+        if settings.STORAGE_PROVIDER and settings.STORAGE_PROVIDER != 'LOCAL':
+            logger.info(f"Verificando que el objeto existe en el bucket: {bucket_key}")
+            if not StorageService.verify_object_exists(bucket_key):
+                return Response(
+                    {'error': f'Objeto no encontrado en el bucket: {bucket_key}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        else:
+            logger.info(f"DEMO MODE: Saltando verificación de storage para {bucket_key}")
+        
         
         document = Document.objects.create(
             company=company,
@@ -140,12 +143,14 @@ class DocumentViewSet(viewsets.ModelViewSet):
         document = self.get_object()
         
         try:
-            # DEMO: Comentado para demo sin S3 configurado
-            # download_url = StorageService.generate_get_url(document.bucket_key)
-            
-            # Generar URL mock para demo
-            download_url = f"https://storage-demo.example.com/{document.bucket_key}?expires=900"
-            logger.info(f"URL de descarga MOCK generada para documento {document.id}")
+            # Si STORAGE_PROVIDER está configurado, usar S3/GCS real
+            if settings.STORAGE_PROVIDER and settings.STORAGE_PROVIDER != 'LOCAL':
+                download_url = StorageService.generate_get_url(document.bucket_key)
+                logger.info(f"URL de descarga generada desde {settings.STORAGE_PROVIDER} para documento {document.id}")
+            else:
+                # Generar URL mock para demo sin storage configurado
+                download_url = f"https://storage-demo.example.com/{document.bucket_key}?expires=900"
+                logger.info(f"URL de descarga MOCK generada para documento {document.id}")
         except Exception as e:
             logger.error(f"Error generando URL de descarga: {e}")
             return Response(
