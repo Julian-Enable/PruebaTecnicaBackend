@@ -38,7 +38,7 @@ class Document(AuditMixin):
     # Entity reference (generic relationship via fields)
     # Referencia a entidad (relación genérica via campos)
     entity_type = models.CharField(max_length=100)
-    entity_id = models.UUIDField()
+    entity_id = models.CharField(max_length=255)  # Permite IDs flexibles como placas, códigos, etc.
     
     class Meta:
         constraints = [
