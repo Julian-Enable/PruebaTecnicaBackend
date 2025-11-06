@@ -86,6 +86,9 @@ class ValidationService:
             logger.warning(f"Paso {actor_step.order} ya aprobado para documento {document_id}")
             return document
         
+        # Obtener instancia de User para el actor (se usará en cascada y aprobación actual)
+        actor_user = User.objects.get(id=actor_user_id)
+        
         # Get all steps
         all_steps = list(ValidationStep.objects.filter(flow=flow).order_by('order'))
         max_order = max(step.order for step in all_steps)
@@ -136,9 +139,6 @@ class ValidationService:
             step_order=actor_step.order,
             reason=reason
         )
-        
-        # Obtener instancia de User para el actor
-        actor_user = User.objects.get(id=actor_user_id)
         
         # Registrar aprobación del nivel actual en auditoría
         DocumentStateAudit.objects.create(
