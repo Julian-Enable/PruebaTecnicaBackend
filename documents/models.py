@@ -92,6 +92,7 @@ class DocumentStateAudit(models.Model):
     reason = models.TextField(null=True, blank=True)
     from_status = models.CharField(max_length=1, null=True, blank=True)
     to_status = models.CharField(max_length=1, null=True, blank=True)
+    validation_level = models.IntegerField(null=True, blank=True, help_text='Nivel de validación aprobado/rechazado')
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:

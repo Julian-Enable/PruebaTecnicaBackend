@@ -83,13 +83,62 @@ class ValidationService:
         all_steps = list(ValidationStep.objects.filter(flow=flow).order_by('order'))
         max_order = max(step.order for step in all_steps)
         
-        # Record approval action
+        # Registrar aprobaciones en cascada para niveles inferiores
+        # Si el actor aprueba en orden K, auto-aprobar todos los órdenes < K que estén pendientes
+        if actor_step.order > 1:
+            lower_steps = [s for s in all_steps if s.order < actor_step.order]
+            for lower_step in lower_steps:
+                # Verificar si ya fue aprobado
+                already_approved = ValidationAction.objects.filter(
+                    instance=instance,
+                    step_order=lower_step.order,
+                    action='APPROVE'
+                ).exists()
+                
+                if not already_approved:
+                    # Auto-aprobar este nivel
+                    ValidationAction.objects.create(
+                        instance=instance,
+                        actor_user_id=actor_user_id,
+                        action='APPROVE',
+                        step_order=lower_step.order,
+                        reason=f"Auto-aprobado por cascada (aprobador de nivel {actor_step.order})"
+                    )
+                    
+                    # Registrar en auditoría
+                    DocumentStateAudit.objects.create(
+                        document=document,
+                        action='APPROVE',
+                        actor_id=actor_user_id,
+                        reason=f"Auto-aprobado por cascada desde nivel {actor_step.order}",
+                        from_status='P',
+                        to_status='P',  # Sigue pendiente hasta que todos aprueben
+                        validation_level=lower_step.order
+                    )
+                    
+                    logger.info(
+                        f"Nivel {lower_step.order} auto-aprobado por cascada "
+                        f"por usuario {actor_user_id} (nivel {actor_step.order})"
+                    )
+        
+        # Record approval action for the actual approver's level
         ValidationAction.objects.create(
             instance=instance,
             actor_user_id=actor_user_id,
             action='APPROVE',
             step_order=actor_step.order,
             reason=reason
+        )
+        
+        # Registrar aprobación del nivel actual en auditoría
+        DocumentStateAudit.objects.create(
+            document=document,
+            action='APPROVE',
+            actor_id=actor_user_id,
+            reason=reason or f"Aprobado en nivel {actor_step.order}",
+            from_status='P',
+            to_status='P' if actor_step.order < max_order else 'A',
+            validation_level=actor_step.order
         )
         
         # Update current_max_order_approved
@@ -106,14 +155,15 @@ class ValidationService:
             document.save()
             instance.save()
             
-            # Audit state change
+            # Registrar cambio de estado final del documento en auditoría
             DocumentStateAudit.objects.create(
                 document=document,
                 action='APPROVE',
                 actor_id=actor_user_id,
-                reason=reason,
+                reason=f"Documento completamente aprobado en nivel {actor_step.order}",
                 from_status=old_status,
-                to_status='A'
+                to_status='A',
+                validation_level=actor_step.order
             )
             
             logger.info(
@@ -125,7 +175,7 @@ class ValidationService:
             instance.save()
             logger.info(
                 f"Documento {document_id} aprobado en paso {actor_step.order} "
-                f"por usuario {actor_user_id}"
+                f"por usuario {actor_user_id}. Quedan niveles pendientes."
             )
         
         return document
