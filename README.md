@@ -226,7 +226,7 @@ Content-Type: application/json
   "company_id": "9da4abe9-57c7-4d76-ad5c-5e01d554f2c5",
   "entity": {
     "entity_type": "vehicle",
-    "entity_id": "22222222-2222-2222-2222-222222222222"
+    "entity_id": "ABC123"
   },
   "document": {
     "name": "documento_1729845123456.pdf",
@@ -408,7 +408,7 @@ curl -X POST https://pruebatecnicabackend-production.up.railway.app/api/document
   -H "Content-Type: application/json" \
   -d '{
     "company_id":"9da4abe9-57c7-4d76-ad5c-5e01d554f2c5",
-    "entity":{"entity_type":"vehicle","entity_id":"22222222-2222-2222-2222-222222222222"},
+    "entity":{"entity_type":"vehicle","entity_id":"XYZ789"},
     "document":{
       "name":"documento_demo.pdf",
       "mime_type":"application/pdf",

@@ -51,11 +51,11 @@ SELECT id, name FROM core_company;
 -- PASO 5: Crear membresías (IMPORTANTE: Reemplazar el UUID abajo)
 -- Reemplaza '9da4abe9-57c7-4d76-ad5c-5e01d554f2c5' con el UUID que apareció en PASO 4
 
-INSERT INTO core_companymembership (user_id, company_id, is_active, created_at, updated_at)
-SELECT u.id, '9da4abe9-57c7-4d76-ad5c-5e01d554f2c5'::uuid, true, NOW(), NOW()
+INSERT INTO core_companymembership (id, user_id, company_id, role, is_active, created_at)
+SELECT gen_random_uuid(), u.id, '9da4abe9-57c7-4d76-ad5c-5e01d554f2c5'::uuid, 'APPROVER', true, NOW()
 FROM auth_user u
 WHERE u.username IN ('sebastian', 'camilo', 'juan')
-ON CONFLICT (user_id, company_id) DO UPDATE SET is_active = true;
+ON CONFLICT (user_id, company_id) DO UPDATE SET is_active = true, role = 'APPROVER';
 
 -- PASO 6: Verificar las membresías
 SELECT 

@@ -167,7 +167,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"company_id\": \"9da4abe9-57c7-4d76-ad5c-5e01d554f2c5\",\n  \"entity\": {\n    \"entity_type\": \"vehicle\",\n    \"entity_id\": \"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee\"\n  },\n  \"document\": {\n    \"name\": \"documento_{{doc_timestamp}}.pdf\",\n    \"mime_type\": \"application/pdf\",\n    \"size_bytes\": 50000,\n    \"bucket_key\": \"companies/demo/vehicles/documento_{{doc_timestamp}}.pdf\"\n  },\n  \"validation_flow\": {\n    \"enabled\": false\n  }\n}"
+              "raw": "{\n  \"company_id\": \"9da4abe9-57c7-4d76-ad5c-5e01d554f2c5\",\n  \"entity\": {\n    \"entity_type\": \"vehicle\",\n    \"entity_id\": \"ABC123\"\n  },\n  \"document\": {\n    \"name\": \"documento_{{doc_timestamp}}.pdf\",\n    \"mime_type\": \"application/pdf\",\n    \"size_bytes\": 50000,\n    \"bucket_key\": \"companies/demo/vehicles/documento_{{doc_timestamp}}.pdf\"\n  },\n  \"validation_flow\": {\n    \"enabled\": false\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/",
@@ -218,7 +218,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"company_id\": \"9da4abe9-57c7-4d76-ad5c-5e01d554f2c5\",\n  \"entity\": {\n    \"entity_type\": \"vehicle\",\n    \"entity_id\": \"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee\"\n  },\n  \"document\": {\n    \"name\": \"documento_{{doc_timestamp}}.pdf\",\n    \"mime_type\": \"application/pdf\",\n    \"size_bytes\": 123456,\n    \"bucket_key\": \"companies/demo/vehicles/documento_{{doc_timestamp}}.pdf\"\n  },\n  \"validation_flow\": {\n    \"enabled\": true,\n    \"steps\": [\n      {\"order\": 1, \"approver_user_id\": 9},\n      {\"order\": 2, \"approver_user_id\": 10},\n      {\"order\": 3, \"approver_user_id\": 11}\n    ]\n  }\n}"
+              "raw": "{\n  \"company_id\": \"9da4abe9-57c7-4d76-ad5c-5e01d554f2c5\",\n  \"entity\": {\n    \"entity_type\": \"vehicle\",\n    \"entity_id\": \"XYZ789\"\n  },\n  \"document\": {\n    \"name\": \"documento_{{doc_timestamp}}.pdf\",\n    \"mime_type\": \"application/pdf\",\n    \"size_bytes\": 123456,\n    \"bucket_key\": \"companies/demo/vehicles/documento_{{doc_timestamp}}.pdf\"\n  },\n  \"validation_flow\": {\n    \"enabled\": true,\n    \"steps\": [\n      {\"order\": 1, \"approver_user_id\": 9},\n      {\"order\": 2, \"approver_user_id\": 10},\n      {\"order\": 3, \"approver_user_id\": 11}\n    ]\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/",
