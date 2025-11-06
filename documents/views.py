@@ -35,10 +35,17 @@ class DocumentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsCompanyMember]
     
     def get_queryset(self):
-        """Filtra documentos por membresía de empresa"""
+        """Filtra documentos por membresía de empresa y opcionalmente por validation_status"""
         user = self.request.user
         company_ids = user.company_memberships.filter(is_active=True).values_list('company_id', flat=True)  # type: ignore[attr-defined]
-        return Document.objects.filter(company_id__in=company_ids)
+        queryset = Document.objects.filter(company_id__in=company_ids)
+        
+        # Filtrar por validation_status si se proporciona en query params
+        validation_status = self.request.query_params.get('validation_status')
+        if validation_status:
+            queryset = queryset.filter(validation_status=validation_status)
+        
+        return queryset
     
     @transaction.atomic
     def create(self, request):
