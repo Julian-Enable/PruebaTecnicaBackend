@@ -73,7 +73,7 @@ class DocumentMetadataSerializer(serializers.Serializer):
 class EntityReferenceSerializer(serializers.Serializer):
     """Serializador para referencia de entidad"""
     entity_type = serializers.CharField(max_length=100)
-    entity_id = serializers.UUIDField()
+    entity_id = serializers.CharField(max_length=255)  # Soporta placas, códigos, UUIDs, etc.
 
 
 class DocumentCreateSerializer(serializers.Serializer):
