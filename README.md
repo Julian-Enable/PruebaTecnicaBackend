@@ -13,8 +13,6 @@ Sistema backend completo de gestión de documentos para ERP con validaciones jer
 - **Juan** (CEO): `juan` / `admin123`
 
 **Archivos de la demo**: Ver carpeta `/entrega/` con:
-- `GUION_VIDEO.md` - Guion detallado para video de sustentación
-- `INSTRUCTIVO_DEMO.md` - Instructivo completo de pruebas
 - `ERP_Documents_Postman_Collection.json` - Colección de Postman lista para importar
 
 ## Características
