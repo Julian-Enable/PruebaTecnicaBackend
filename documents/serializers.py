@@ -132,7 +132,7 @@ class DocumentDownloadSerializer(serializers.Serializer):
 
 class ValidationActionSerializer(serializers.Serializer):
     """Serializador para acciones de aprobación/rechazo"""
-    actor_user_id = serializers.IntegerField()
+    # actor_user_id ya no es necesario - se toma del token JWT (request.user)
     reason = serializers.CharField(required=False, allow_blank=True)
 
 

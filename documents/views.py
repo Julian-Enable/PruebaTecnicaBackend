@@ -195,7 +195,8 @@ class DocumentViewSet(viewsets.ModelViewSet):
         serializer = ValidationActionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        actor_user_id = serializer.validated_data['actor_user_id']
+        # CORRECCIÓN: Usar el usuario autenticado, no el del body
+        actor_user_id = request.user.id  # Tomar del token JWT
         reason = serializer.validated_data.get('reason')
         
         if not request.user.company_memberships.filter(
@@ -228,13 +229,14 @@ class DocumentViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'], url_path='reject')
     def reject(self, request, pk=None):
-        """Rechaza documento (estado terminal)"""
+        """Rechaza documento"""
         document = self.get_object()
         
         serializer = ValidationActionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        actor_user_id = serializer.validated_data['actor_user_id']
+        # CORRECCIÓN: Usar el usuario autenticado, no el del body
+        actor_user_id = request.user.id  # Tomar del token JWT
         reason = serializer.validated_data.get('reason')
         
         if not request.user.company_memberships.filter(

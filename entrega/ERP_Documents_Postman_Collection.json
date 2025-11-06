@@ -267,7 +267,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"actor_user_id\": {{user_juan}},\n  \"reason\": \"Aprobado por CEO - cumple todos los requisitos legales\"\n}"
+              "raw": "{\n  \"reason\": \"Aprobado por CEO - cumple todos los requisitos legales\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
@@ -293,7 +293,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"actor_user_id\": 9,\n  \"reason\": \"Aprobado por Supervisor - documentación completa\"\n}"
+              "raw": "{\n  \"reason\": \"Aprobado por Supervisor - documentación completa\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
@@ -319,7 +319,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"actor_user_id\": 10,\n  \"reason\": \"Aprobado por Gerente - presupuesto aprobado\"\n}"
+              "raw": "{\n  \"reason\": \"Aprobado por Gerente - presupuesto aprobado\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
@@ -345,7 +345,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"actor_user_id\": 11,\n  \"reason\": \"Aprobado por CEO - autorización final\"\n}"
+              "raw": "{\n  \"reason\": \"Aprobado por CEO - autorización final\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/{{document_id}}/approve/",
@@ -371,7 +371,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"actor_user_id\": 10,\n  \"reason\": \"Documento ilegible - falta firma del representante legal\"\n}"
+              "raw": "{\n  \"reason\": \"Documento ilegible - falta firma del representante legal\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/documents/{{document_id}}/reject/",
