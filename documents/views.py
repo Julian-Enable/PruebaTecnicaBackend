@@ -2,12 +2,16 @@
 Vistas de API para documentos
 """
 import logging
+from typing import TYPE_CHECKING
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
 from django.conf import settings
+
+if TYPE_CHECKING:
+    from rest_framework.request import Request
 
 from documents.models import Document, DocumentDownloadAudit, DocumentStateAudit
 from documents.serializers import (
@@ -36,12 +40,12 @@ class DocumentViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         """Filtra documentos por membresía de empresa y opcionalmente por validation_status"""
-        user = self.request.user
+        user = self.request.user  # type: ignore[attr-defined]
         company_ids = user.company_memberships.filter(is_active=True).values_list('company_id', flat=True)  # type: ignore[attr-defined]
         queryset = Document.objects.filter(company_id__in=company_ids)
         
         # Filtrar por validation_status si se proporciona en query params
-        validation_status = self.request.query_params.get('validation_status')
+        validation_status = self.request.query_params.get('validation_status')  # type: ignore[attr-defined]
         if validation_status:
             queryset = queryset.filter(validation_status=validation_status)
         
