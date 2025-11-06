@@ -61,6 +61,13 @@ class ValidationService:
         if instance.status == 'A':
             raise ValueError("El documento ya está completamente aprobado")
         
+        # Validar también el estado del documento
+        if document.validation_status == 'R':
+            raise ValueError("No se puede aprobar: el documento está rechazado")
+        
+        if document.validation_status == 'A':
+            raise ValueError("El documento ya está aprobado")
+        
         actor_step = ValidationStep.objects.filter(
             flow=flow,
             approver_user_id=actor_user_id
@@ -109,7 +116,7 @@ class ValidationService:
                     DocumentStateAudit.objects.create(
                         document=document,
                         action='APPROVE',
-                        actor_id=actor_user_id,
+                        actor=actor_user,  # CORRECCIÓN: usar ForeignKey
                         reason=f"Auto-aprobado por cascada desde nivel {actor_step.order}",
                         from_status='P',
                         to_status='P',  # Sigue pendiente hasta que todos aprueben
@@ -130,11 +137,14 @@ class ValidationService:
             reason=reason
         )
         
+        # Obtener instancia de User para el actor
+        actor_user = User.objects.get(id=actor_user_id)
+        
         # Registrar aprobación del nivel actual en auditoría
         DocumentStateAudit.objects.create(
             document=document,
             action='APPROVE',
-            actor_id=actor_user_id,
+            actor=actor_user,  # CORRECCIÓN: usar ForeignKey, no actor_id
             reason=reason or f"Aprobado en nivel {actor_step.order}",
             from_status='P',
             to_status='P' if actor_step.order < max_order else 'A',
@@ -149,22 +159,11 @@ class ValidationService:
         # Check if this is the highest order step
         if actor_step.order == max_order:
             # Document fully approved
-            old_status = document.validation_status
             document.validation_status = 'A'
             instance.status = 'A'
             document.save()
             instance.save()
-            
-            # Registrar cambio de estado final del documento en auditoría
-            DocumentStateAudit.objects.create(
-                document=document,
-                action='APPROVE',
-                actor_id=actor_user_id,
-                reason=f"Documento completamente aprobado en nivel {actor_step.order}",
-                from_status=old_status,
-                to_status='A',
-                validation_level=actor_step.order
-            )
+            # NO crear auditoría duplicada - ya se creó arriba con to_status='A'
             
             logger.info(
                 f"Documento {document_id} completamente aprobado por usuario {actor_user_id} "
@@ -231,6 +230,9 @@ class ValidationService:
         if not actor_step:
             raise ValueError(f"User {actor_user_id} is not an approver in this validation flow")
         
+        # Obtener instancia de User para el actor
+        actor_user = User.objects.get(id=actor_user_id)
+        
         # Registra acción de rechazo
         ValidationAction.objects.create(
             instance=instance,
@@ -252,10 +254,11 @@ class ValidationService:
         DocumentStateAudit.objects.create(
             document=document,
             action='REJECT',
-            actor_id=actor_user_id,
+            actor=actor_user,  # CORRECCIÓN: usar ForeignKey, no actor_id
             reason=reason,
             from_status=old_status,
-            to_status='R'
+            to_status='R',
+            validation_level=actor_step.order  # Registrar nivel donde se rechazó
         )
         
         logger.info(
